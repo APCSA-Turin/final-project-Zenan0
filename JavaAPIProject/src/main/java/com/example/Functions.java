@@ -2,15 +2,55 @@ package com.example;
 
 public class Functions {
     public static int numWords(String str) {
-        int counter = 1;
-        if (str.indexOf(" ") == -1) {
-            return counter;
+        int counter = 0;
+        for (int i = 0; i < str.length(); i++) {
+            if (str.substring(i, i + 1).equals(" ")) {
+                counter++;
+            }
         }
-        String newStr = str.substring(str.indexOf(" "));
-        while (newStr.indexOf(" ") != -1) {
-            counter++;
-            newStr = newStr.substring(newStr.indexOf(" ") + 1);
+        return counter + 1;
+    }
+
+    public static int calculateWPM(int numWords, double time) {
+        double wpm = (double) numWords / time;
+        return (int) (wpm * 60);
+    }
+
+    public static String[] stringToWords(String str) {
+        String[] words = new String[numWords(str)];
+        int currentWord = 0;
+        String tempWords = "";
+        for (int i = 0; i < str.length(); i++) {
+            if (str.substring(i, i + 1).equals(" ")) {
+                words[currentWord] = tempWords;
+                currentWord++;
+                tempWords = "";
+            } else {
+                tempWords += str.substring(i, i + 1);
+            }
         }
-        return counter;
+        words[words.length - 1] = tempWords;
+        return words;
+    }
+
+    public static double checkAccuracy(String originalStr, String userStr) {
+        String[] origStrWords = stringToWords(originalStr);
+        String[] userStrWords = stringToWords(userStr);
+        int numCorrect = 0;
+        if (userStrWords.length >= origStrWords.length) {
+            for (int i = 0; i < origStrWords.length; i++) {
+                if (userStrWords[i].equals(origStrWords[i])) {
+                    numCorrect++;
+                }
+            }
+        } else {
+            for (int i = 0; i < userStrWords.length; i++) {
+                if (userStrWords[i].equals(origStrWords[i])) {
+                    numCorrect++;
+                }
+            }
+        }
+
+        return (double) numCorrect / numWords(originalStr) * 100;
     }
 }

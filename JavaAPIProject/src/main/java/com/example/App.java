@@ -3,6 +3,9 @@ import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.time.LocalTime;
+import java.util.Scanner;
+
 import javax.swing.*;
 import java.io.InputStream;
 import java.awt.*;
@@ -19,7 +22,8 @@ public class App
 {
     public static void main( String[] args )
     {
-        System.out.println( "Hello World!" );
+        // System.out.println( "Hello World!" );
+        Scanner scanner = new Scanner(System.in);
         try {
             // System.out.println(getData("https://zenquotes.io/api/random"));
             JSONArray quotes = new JSONArray(getData("https://zenquotes.io/api/random"));
@@ -27,13 +31,20 @@ public class App
             String quote = obj.getString("q");
             System.out.println(quote);
             System.out.println(Functions.numWords(quote));
+            double start = LocalTime.now().toNanoOfDay();
+            String userInput = scanner.nextLine();
+            double end = LocalTime.now().toNanoOfDay();
+            double time = (end - start) / 1000000000;
+            System.out.println("Your wpm is " + Functions.calculateWPM(Functions.numWords(userInput), time));
+            System.out.println("Your accuracy was " + Functions.checkAccuracy(quote, userInput) + "%");
+            scanner.close();
         } catch (Exception e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
         }
 
         // Create the main frame
-        JFrame frame = new JFrame("Data Viewer");
+        JFrame frame = new JFrame("Typing Test Game");
         frame.setSize(800, 600);
         frame.setResizable(false);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
