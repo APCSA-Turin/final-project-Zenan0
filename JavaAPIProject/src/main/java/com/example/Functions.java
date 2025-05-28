@@ -3,6 +3,9 @@ package com.example;
 public class Functions {
     public static int numWords(String str) {
         int counter = 0;
+        if (str.length() == 0) {
+            return counter;
+        }
         for (int i = 0; i < str.length(); i++) {
             if (str.substring(i, i + 1).equals(" ")) {
                 counter++;
@@ -18,6 +21,9 @@ public class Functions {
 
     public static String[] stringToWords(String str) {
         String[] words = new String[numWords(str)];
+        if (words.length == 0) {
+            return words;
+        }
         int currentWord = 0;
         String tempWords = "";
         for (int i = 0; i < str.length(); i++) {
