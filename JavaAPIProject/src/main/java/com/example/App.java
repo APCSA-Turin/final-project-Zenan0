@@ -23,13 +23,12 @@ public class App
     public static void main( String[] args )
     {
         // System.out.println( "Hello World!" );
-        Scanner scanner = new Scanner(System.in);
         try {
             // System.out.println(getData("https://zenquotes.io/api/random"));
             // System.out.println("Welcome to the typing test game! Copy the quote shown below to see your wpm and accuracy!");
-            // JSONArray quotes = new JSONArray(getData("https://zenquotes.io/api/random"));
-            // JSONObject obj = quotes.getJSONObject(0);
-            // String quote = obj.getString("q");
+            JSONArray quotes = new JSONArray(getData("https://zenquotes.io/api/random"));
+            JSONObject obj = quotes.getJSONObject(0);
+            String quote = obj.getString("q");
             // System.out.println(quote);
             // // System.out.println(Functions.numWords(quote));
             // double start = LocalTime.now().toNanoOfDay();
@@ -38,14 +37,15 @@ public class App
             // double time = (end - start) / 1000000000;
             // System.out.println("Your wpm is " + Functions.calculateWPM(Functions.numWords(userInput), time));
             // System.out.println("Your accuracy was " + Functions.checkAccuracy(quote, userInput) + "%");
-            // scanner.close();
+            MainScreen mainScreen = new MainScreen(quote);
+            // InfoButton info = new InfoButton();
         } catch (Exception e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
         }
-
-        // MainScreen mainScreen = new MainScreen();
-        WelcomeScreen welcome = new WelcomeScreen();
+        
+        
+        // InfoButton welcome = new InfoButton();
 
         // // Create the main frame
         // JFrame frame = new JFrame("Typing Test Game");

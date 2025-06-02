@@ -1,5 +1,14 @@
 package com.example;
 
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
+import java.net.URL;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 public class Functions {
     public static int numWords(String str) {
         int counter = 0;
@@ -14,9 +23,24 @@ public class Functions {
         return counter + 1;
     }
 
-    public static int calculateWPM(int numWords, double time) {
-        double wpm = (double) numWords / time;
+    public static int numChars(String str) {
+        int chars = 0;
+        for (int i = 0; i < str.length(); i++) {
+            if (!str.substring(i, i + 1).equals(" ")) {
+                chars++;
+            }
+        }
+        return chars;
+    }
+
+    public static int calculateWPM(int numChars, double time) {
+        double wpm = (((double) numChars) / 5) / time;
         return (int) (wpm * 60);
+    }
+
+    public static double calculateDoubleWPM(int numChars, double time) {
+        double wpm = (((double) numChars) / 5) / time;
+        return wpm * 60;
     }
 
     public static String[] stringToWords(String str) {
@@ -58,5 +82,46 @@ public class Functions {
         }
 
         return (double) numCorrect / numWords(originalStr) * 100;
+    }
+
+    public static JSONObject getRandomQuoteData() throws JSONException, Exception {
+        JSONArray quoteArray = new JSONArray(getData("https://zenquotes.io/api/random"));
+        JSONObject obj = quoteArray.getJSONObject(0);
+        return obj;
+    }
+
+    public static String getRandomQuote(JSONObject obj) {
+        return obj.getString("q");
+    }
+
+    public static String getQuoteAuthor(JSONObject obj) {
+        return obj.getString("a");
+    }
+
+    public static String getQuoteChars(JSONObject obj) {
+        return obj.getString("c");
+    }
+
+    public static String getData(String endpoint) throws Exception {
+        /*endpoint is a url (string) that you get from an API website*/
+        URL url = new URL(endpoint);
+        /*connect to the URL*/
+        HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+        /*creates a GET request to the API.. Asking the server to retrieve information for our program*/
+        connection.setRequestMethod("GET");
+        /* When you read data from the server, it wil be in bytes, the InputStreamReader will convert it to text. 
+        The BufferedReader wraps the text in a buffer so we can read it line by line*/
+        BufferedReader buff = new BufferedReader(new InputStreamReader(connection.getInputStream()));
+        String inputLine;//variable to store text, line by line
+        /*A string builder is similar to a string object but faster for larger strings, 
+        you can concatenate to it and build a larger string. Loop through the buffer 
+        (read line by line). Add it to the stringbuilder */
+        StringBuilder content = new StringBuilder();
+        while ((inputLine = buff.readLine()) != null) {
+            content.append(inputLine);
+        }
+        buff.close(); //close the bufferreader
+        connection.disconnect(); //disconnect from server 
+        return content.toString(); //return the content as a string
     }
 }
