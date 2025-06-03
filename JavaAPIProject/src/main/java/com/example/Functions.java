@@ -10,6 +10,8 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 public class Functions {
+    // word is defined as any letter/character separated by spaces
+    // returns the number of words in str
     public static int numWords(String str) {
         int counter = 0;
         if (str.length() == 0) {
@@ -23,26 +25,36 @@ public class Functions {
         return counter + 1;
     }
 
-    public static int numChars(String str) {
+    // returns the number characters between origStr and userStr that match
+    public static int numCorrectChars(String origStr, String userStr) {
         int chars = 0;
-        for (int i = 0; i < str.length(); i++) {
-            if (!str.substring(i, i + 1).equals(" ")) {
-                chars++;
+        if (userStr.length() < origStr.length()) {
+
+            for (int i = 0; i < userStr.length(); i++) {
+                if (origStr.substring(i, i + 1).equals(userStr.substring(i, i + 1))) {
+                    chars++;
+                }
             }
+
+        } else {
+
+            for (int i = 0; i < origStr.length(); i++) {
+                if (origStr.substring(i, i + 1).equals(userStr.substring(i, i + 1))) {
+                    chars++;
+                }
+            }
+
         }
+
         return chars;
     }
 
-    public static int calculateWPM(int numChars, double time) {
-        double wpm = (((double) numChars) / 5) / time;
-        return (int) (wpm * 60);
-    }
-
-    public static double calculateDoubleWPM(int numChars, double time) {
+    public static double calculateRawWPM(int numChars, double time) {
         double wpm = (((double) numChars) / 5) / time;
         return wpm * 60;
     }
 
+    // turns str into a list containing the words it has
     public static String[] stringToWords(String str) {
         String[] words = new String[numWords(str)];
         if (words.length == 0) {
@@ -91,7 +103,12 @@ public class Functions {
     }
 
     public static String getRandomQuote(JSONObject obj) {
-        return obj.getString("q");
+        String quote = obj.getString("q");
+        // while loop is used to remove any dead spaces found at the end of a quote
+        while (quote.substring(quote.length() - 1).equals(" ")) {
+            quote = quote.substring(0, quote.length() - 1);
+        }
+        return quote;
     }
 
     public static String getQuoteAuthor(JSONObject obj) {
