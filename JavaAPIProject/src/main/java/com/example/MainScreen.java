@@ -104,7 +104,7 @@ public class MainScreen extends JFrame implements ActionListener{
                 if (!input.trim().equals("")) {
                     endTime = LocalTime.now().toNanoOfDay();
                     double duration = (endTime - startTime) / 1000000000;
-                    double temp = Functions.calculateRawWPM(input.length(), duration) * ((double) Functions.numCorrectChars(quote, input) / quote.length()); // calculates the real wpm
+                    double temp = Functions.calculateRawWPM(input.length(), duration) * ((double) Functions.numCorrectChars(quote, input) / quote.length()); // calculates the real wpm by multiplying the raw wpm by the percentage correct characters they typed compared to the original quote
                     wpm.setText("WPM: " + Math.round(temp * 100) / 100.0); // shows the real wpm rounded to the nearest hundredth
                     double temp2 = Functions.checkAccuracy(quote, input); // stores the accuracy in a second temp variable
                     accuracy.setText("Accuracy: " + Math.round(temp2 * 100) / 100.0 + "%"); // displays the accuracy percentage rounded to the nearest hundredth
@@ -157,17 +157,6 @@ public class MainScreen extends JFrame implements ActionListener{
         statsButton.setText("STATS");
         statsButton.setFocusable(false);
         frame.add(statsButton);
-        
-        // panel = new JPanel();
-        // panel.setBounds(150, 300, 500, 50);
-        // panel.setBackground(Color.RED);
-        // quote = new JLabel(q);
-        // Font font = new Font("Arial", Font.BOLD, 24);
-        // quote.setFont(font);
-        // quote.setForeground(Color.BLUE);
-        // quote.setBounds(150, 300, 500, 50);
-        // panel.add(quote);
-        // frame.add(panel);
 
         // stops running the program after the user exits the window, sets the layout of the frame to null, and makes the frame visible
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);

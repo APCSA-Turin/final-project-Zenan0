@@ -115,10 +115,6 @@ public class Functions {
         return obj.getString("a");
     }
 
-    public static String getQuoteChars(JSONObject obj) {
-        return obj.getString("c");
-    }
-
     public static String getData(String endpoint) throws Exception {
         /*endpoint is a url (string) that you get from an API website*/
         URL url = new URL(endpoint);
